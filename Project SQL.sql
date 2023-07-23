@@ -114,3 +114,191 @@ select * from project..employ where salary = (select max(salary) from project..e
 select * from project..employ e
 where 3= (select count(distinct salary) from project..employ  e1
 where e1.salary > e.salary )
+
+--// write a query to join personal table city name or cid column
+select * from project..personal p INNER JOIN project..city c ON p.city = c.cid
+INNER JOIN project..department d
+ON p.Department_no = d.d_id;
+  
+--// write a query not see to F12 CITY OR CID column
+select p.Empno,p.Emp_name,p.salary,p.Emp_phoneno,p.joining_date,p.Emp_job,
+p.Emp_accountno,p.Emp_email_id,p.Emp_address,p.Emp_department,p.Department_no,
+c.cityname 
+from project..personal p INNER JOIN project..city c 
+ON p.city = c.cid;
+
+-- write a query to see how many employs in Delhi
+select p.Empno,p.Emp_name,p.salary,p.Emp_phoneno,p.joining_date,p.Emp_job,
+p.Emp_accountno,p.Emp_email_id,p.Emp_address,p.Emp_department,p.Department_no,
+c.cityname 
+from project..personal p INNER JOIN project..city c 
+ON p.city = c.cid
+Where c.cityname = 'Delhi';
+
+-- write a query to see how many employs in Data analyst
+select p.Empno,p.Emp_name,p.salary,p.Emp_phoneno,p.joining_date,p.Emp_job,
+p.Emp_accountno,p.Emp_email_id,p.Emp_address,p.Emp_department,p.Department_no,
+c.cityname 
+from project..personal p INNER JOIN project..city c 
+ON p.city = c.cid
+where p.Emp_job = 'Data analyst';
+
+--// write a query to personal table Emp_name in ascending order
+select p.Empno,p.Emp_name,p.salary,p.Emp_phoneno,p.joining_date,p.Emp_job,
+p.Emp_accountno,p.Emp_email_id,p.Emp_address,p.Emp_department,p.Department_no,
+c.cityname 
+from project..personal p INNER JOIN project..city c 
+ON p.city = c.cid
+ORDER BY p.Emp_name;
+
+--// DIFFERENCE LEFT JOIN & INNER JOIN
+select s.stu_id,s.name,s.fees,s.mobile,s.[time ],s.course,s.roll_no,
+s.email_id,s.department,d.d_name,d.d_location
+from project..students s LEFT JOIN project..department d
+ON s.department = d.d_name;
+
+select s.stu_id,s.name,s.fees,s.mobile,s.[time ],s.course,s.roll_no,
+s.email_id,s.department,d.d_name,d.d_location
+from project..students s INNER JOIN project..department d
+ON s.department = d.d_name;
+
+-- Write a query to details analytics department
+select s.stu_id,s.name,s.fees,s.mobile,s.[time ],s.course,s.roll_no,
+s.email_id,s.department,d.d_name,d.d_location
+from project..students s INNER JOIN project..department d
+ON s.department = d.d_name
+where s.department = 'analytics';
+
+--write a query to change name martialstatus relationship & hoursperweek and how many genders are male in ascending order
+select w.age,w.workclass,w.education,w.maritalstatus AS Martial_Status,
+w.occupation,w.relationship AS Relation_Ship,w.race,w.gender,
+w.hoursperweek AS Hoursper_Week,w.income,c.cityname
+from project..work w INNER JOIN project..city c 
+ON w.city = c.cid
+where w.gender = 'Male'
+ORDER BY age;
+
+-- RIGHT JOIN
+select s.stu_id,s.name,s.fees,s.mobile,s.[time ],s.course,s.roll_no,
+s.email_id,s.department,d.d_name
+from project..students s RIGHT JOIN project..department d
+ON s.department = d.d_name;
+
+--CROSS JOIN
+select *
+from project..personal CROSS JOIN project..city;
+
+--Write a query to change Emp_name & cityname and see how many employs are city in bhopal
+select p.Empno,p.Emp_name AS Name,p.salary,p.Emp_phoneno,
+p.joining_date,p.Emp_job,p.Emp_accountno,p.Emp_email_id,
+p.Emp_address,p.Emp_department,p.Department_no,
+c.cityname AS City
+from project..personal p CROSS JOIN project..city c
+where c.cityname = 'Bhopal';
+
+--Join Multiple tables
+select * from project..personal p INNER JOIN project..city c 
+ON p.city = c.cid
+INNER JOIN
+project..department d
+ON p.Department_no = d.d_id;
+
+--write a query to How many employes cityname in Agra & order by department name ascending order in three tables
+select p.Empno,p.Emp_name AS Name,p.salary,p.Emp_phoneno AS Phone_Number,
+p.joining_date,p.Emp_job AS Employ_Post,p.Emp_accountno,p.Emp_email_id AS Email_ID,
+p.Emp_address,p.Emp_department,p.Department_no,c.cityname AS City,d.d_id,
+d.d_name AS Department_Name,d.d_location AS Department_Location
+FROM project..personal p INNER JOIN project..city c 
+ON p.city = c.cid
+INNER JOIN
+project..department d
+ON p.Department_no = d.d_id
+WHERE cityname = 'Agra'
+ORDER BY Department_no;
+
+--write a query to join four tables & order by course name in ascending order
+select p.Empno AS Employ_ID,p.Emp_name AS Employ_Name,p.salary AS Employ_Salary,
+p.Emp_phoneno AS Emp_Contact_No,p.joining_date AS Join_Date,p.Emp_job,
+p.Emp_accountno AS Emp_Account_Details,p.Emp_email_id,p.Emp_address,
+p.Emp_department,p.Department_no,cr.course_name,d.d_name,d.d_location,
+c.cityname AS City
+from project..personal p INNER JOIN project..courses cr 
+ON p.city = cr.course_id  
+INNER JOIN
+project..department d
+ON p.Department_no = d.d_id
+INNER JOIN
+project..city c
+ON p.city = c.cid
+ORDER BY course_name;
+
+--write a query to count AGRA BHOPAL AND DELHI
+select c.cityname, COUNT(p.city) AS Total
+FROM project..personal p INNER JOIN project..city c
+ON p.city = c.cid
+GROUP BY cityname;
+
+--write a query to hours per week age greater than 25
+select w.hoursperweek, COUNT(s.stu_id) AS Total
+FROM project..work w INNER JOIN project..students s
+ON s.stu_id = w.city
+WHERE age>40
+GROUP BY hoursperweek
+ORDER BY Total;
+
+--Write a query to which city is less than 4
+select c.cityname AS CITY, COUNT(p.city) AS TOTAL
+FROM project..personal p INNER JOIN project..city c
+ON p.city = c.cid
+GROUP BY cityname
+HAVING COUNT(p.city) <4
+ORDER BY TOTAL;
+
+--UNION
+select * from project..Professor
+UNION
+select * from project..Lecturers
+
+--UNION QUERY
+select name,age from project..Professor 
+Where city = 1
+UNION ALL
+select name,age from project..Lecturers 
+Where city = 2
+
+--write a query to add a cityname in this table & find to delhi records
+select P.id,P.name,P.age,P.gender,c.cityname
+from Project..Professor P INNER JOIN Project..city c
+ON P.city = c.cid
+Where c.cityname = 'Delhi'
+UNION ALL 
+select L.id,L.name,L.age,L.gender,c.cityname
+from Project..Lecturers L INNER JOIN Project..city c
+ON L.city = c.cid
+Where c.cityname = 'Delhi'
+ORDER BY id,age;
+
+--write a query to how many students are in btech
+select name from project..professor p 
+where course = (select course_id from project..courses c where course_name = 'Btech');
+
+--write a query to how many students are fees in submit and due
+SELECT stu_id,name,fees,mobile,time,course,roll_no,email_id,address,department,
+IIF(fees >=40000, 'FEES SUBMITTED', 'FEES DUE')
+AS FEESTATUS
+FROM project..students;
+
+--write a query how many students are in admission status
+SELECT stu_id,name,fees,
+CASE
+When fees >=50000 AND fees <=60000
+Then 'Direct Admission'
+When fees >=40000 AND fees <=60000
+Then 'Direct Admission'
+When fees >=30000 AND fees <=60000
+Then 'Sport Kota'
+When fees <10000 Then 'Fail'
+Else 'Scholar ship'
+
+End As Grade
+From project..students;
